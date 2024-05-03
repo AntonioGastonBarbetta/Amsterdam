@@ -11,6 +11,7 @@ import com.martincastroandantoniobarbetta.amsterdam.ui.theme.AmsterdamTheme
 
 import Home
 import AddElementButton
+import AddNote
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +22,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Home()
+                    AddNote()
+                    //Home()
                     AddElementButton()
                 }
             }
