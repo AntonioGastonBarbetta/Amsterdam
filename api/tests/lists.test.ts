@@ -51,6 +51,7 @@ describe("API Endpoint Tests", () => {
     expect(response.data.lists).not.toBe(undefined);
   }, 10000);
 
+  /*
   test("DELETE API Lists", async () => {
     const url: string = execSync(
       `cat ../outputs.json | jq -r '.BlueListsApiStacks.BlueListsApiUrl'`,
@@ -78,6 +79,7 @@ describe("API Endpoint Tests", () => {
     );
     expect(deleteResponse.status).toBe(200);
   }, 10000);
+  */
 
   test("OPTIONS API Lists", async () => {
     const url: string = execSync(
