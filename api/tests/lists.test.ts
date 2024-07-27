@@ -29,7 +29,7 @@ describe("API Endpoint Tests", () => {
     expect(response.data.name).not.toBe(undefined);
     expect(response.data.createdAt).not.toBe(undefined);
     expect(response.data.owner).not.toBe(undefined);
-  });
+  }, 10000);
 
   test("GET API Lists", async () => {
     const url: string = execSync(
@@ -49,7 +49,7 @@ describe("API Endpoint Tests", () => {
     expect(response.data).not.toBe("{}");
     expect(response.data).not.toBe({});
     expect(response.data.lists).not.toBe(undefined);
-  });
+  }, 10000);
 
   test("DELETE API Lists", async () => {
     const url: string = execSync(

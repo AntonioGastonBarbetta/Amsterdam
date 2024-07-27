@@ -29,7 +29,7 @@ describe("API Endpoint Tests", () => {
     );
     expect(itemsResponse.status).toBe(200);
     expect(itemsResponse.data.items).not.toBe(undefined);
-  });
+  }, 10000);
 
   test("PUT API Items", async () => {
     const url: string = execSync(

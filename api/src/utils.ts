@@ -93,7 +93,7 @@ export const addMemberToList = async (
     await setUserLists(email, allLists);
     const members = await getMembersByListId(list.id);
     members.members.push({ email: email });
-    setListMembers(list.id, members);
+    await setListMembers(list.id, members);
   }
   return await getMembersByListId(list.id);
 };
@@ -109,7 +109,7 @@ export const removeMemberFromList = async (
   await setUserLists(email, allLists);
   const members = await getMembersByListId(listId);
   members.members = members.members.filter((member) => member.email !== email);
-  setListMembers(listId, members);
+  await setListMembers(listId, members);
 };
 
 export const setListDetails = async (list: List): Promise<void> => {

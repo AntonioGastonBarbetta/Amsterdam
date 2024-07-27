@@ -180,16 +180,16 @@ class BlueListsApiStack extends cdk.Stack {
       {},
     );
     allListsEndpoint.addMethod(
+      "POST",
+      new apigateway.LambdaIntegration(listsLambda),
+      {},
+    );
+    allListsEndpoint.addMethod(
       "OPTIONS",
       new apigateway.LambdaIntegration(listsLambda),
       {},
     );
 
-    allListsEndpoint.addMethod(
-      "POST",
-      new apigateway.LambdaIntegration(listsLambda),
-      {},
-    );
     oneListEndpoint.addMethod(
       "DELETE",
       new apigateway.LambdaIntegration(listLambda),
@@ -228,6 +228,11 @@ class BlueListsApiStack extends cdk.Stack {
       {},
     );
 
+    oneMemberEndpoint.addMethod(
+      "POST",
+      new apigateway.LambdaIntegration(memberLambda),
+      {},
+    );
     oneMemberEndpoint.addMethod(
       "DELETE",
       new apigateway.LambdaIntegration(memberLambda),

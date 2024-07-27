@@ -30,7 +30,7 @@ describe("API Endpoint Tests", () => {
     expect(membersResponse.status).toBe(200);
     expect(membersResponse.data.members).not.toBe(undefined);
     expect(membersResponse.data.members.length).not.toBe(0);
-  });
+  }, 10000);
 
   test("POST API Members", async () => {
     const url: string = execSync(
@@ -59,6 +59,9 @@ describe("API Endpoint Tests", () => {
     );
     expect(membersResponse.status).toBe(200);
     expect(membersResponse.data.members).not.toBe(undefined);
+    expect(membersResponse.data.members.toString()).toContain(
+      "blue@trolazo.com",
+    );
   }, 10000);
 
   test("DELETE API Members", async () => {
