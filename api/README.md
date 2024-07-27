@@ -1,6 +1,6 @@
 # Amsterdam API
 
-# Deployment
+# Deployment & Testing
 
 Make sure you have the `blue` AWS profile on your system.
 
@@ -21,13 +21,21 @@ npm run test
 
 * *Testing*: Send this header `Authorization: Bearer blue@putazo.com`. It will always be accepted, but you will be authenticated as the test user.
 
+* `Error 400`: Indicates user input error.
+
+* `Error 401`: Indicates a problem with the Googla Oauth token.
+
+* `Error 403`: Indicates a permission issue, such as trying to update a list that you are not part of.
+
+* `Error 404`: Indicates an object does not exist. Most of the times, it indicates the list `id` is invalid.
+
 * *GET* `v1/lists`: Get all the lists you have access to.
 
 ```bash
 {
     "lists": [
-        {"id": "123", "name": "Lorem Ipsum", "createdAt": "...", "owner": "bluw@putaz.com"},
-        {"id": "123", "name": "Lorem Ipsum", "createdAt": "...", "owner": "bluw@putaz.com"}
+        {"id": "123", "name": "Lorem Ipsum", "createdAt": "...", "owner": "bluw@putazo.com"},
+        {"id": "123", "name": "Lorem Ipsum", "createdAt": "...", "owner": "bluw@putazo.com"}
     ]
 }
 ```
@@ -53,9 +61,9 @@ npm run test
 }
 ```
 
-* *POST* `v1/lists/:id/users/blue@trolazo.com`: Add a user to this list.
+* *POST* `v1/lists/:id/users/:email`: Add a user to this list.
 
-* *DELETE* `v1/lists/:id/users/:id`: Delete member from list.
+* *DELETE* `v1/lists/:id/users/:email`: Delete member from list.
 
 * *GET* `v1/lists/:id/items`: Get all the items in a list.
 
