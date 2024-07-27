@@ -1,10 +1,13 @@
+package com.martincastroandantoniobarbetta.amsterdam.ui.components
+
+import ListOfCards
+import SearchBar
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import ListOfCards
 
 @Composable
-fun Home(
+fun HomeScreen(
     modifier: Modifier = Modifier,
 ) {
     Column (modifier = modifier
