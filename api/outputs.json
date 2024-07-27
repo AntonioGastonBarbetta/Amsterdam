@@ -2,5 +2,9 @@
   "BlueListsDataStack": {
     "BlueListsDataBucketArn": "arn:aws:s3:::blue-amsterdam-lists-data",
     "BlueListsDataBucketName": "blue-amsterdam-lists-data"
+  },
+  "BlueListsApiStacks": {
+    "BlueListsApiEndpoint31A114EC": "https://j6ifr4n1gh.execute-api.us-west-2.amazonaws.com/prod/",
+    "BlueListsApiUrl": "https://j6ifr4n1gh.execute-api.us-west-2.amazonaws.com/prod/"
   }
 }
