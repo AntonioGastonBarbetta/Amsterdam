@@ -50,6 +50,7 @@ describe("API Endpoint Tests", () => {
     const listId = response.data.lists[response.data.lists.length - 1].id;
     const membersResponse: AxiosResponse = await axios.post(
       url + "v1/lists/" + listId + "/users/blue@trolazo.com",
+      {},
       {
         headers: {
           Authorization: "Bearer blue@putazo.com",
@@ -59,7 +60,7 @@ describe("API Endpoint Tests", () => {
     );
     expect(membersResponse.status).toBe(200);
     expect(membersResponse.data.members).not.toBe(undefined);
-    expect(membersResponse.data.members.toString()).toContain(
+    expect(JSON.stringify(membersResponse.data.members)).toContain(
       "blue@trolazo.com",
     );
   }, 10000);
@@ -90,6 +91,9 @@ describe("API Endpoint Tests", () => {
       },
     );
     expect(membersResponse.status).toBe(200);
+    expect(JSON.stringify(membersResponse.data.members)).not.toContain(
+      "blue@trolazo.com",
+    );
   }, 20000);
 
   test("OPTIONS API Members", async () => {
