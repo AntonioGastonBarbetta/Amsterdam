@@ -1,0 +1,29 @@
+{
+  "name": "amsterdam-api",
+  "version": "1.0.0",
+  "description": "amsterdam-api",
+  "main": "index.js",
+  "scripts": {
+    "init": "npm install && AWS_PROFILE=blue cdk bootstrap",
+    "build": "tsc",
+    "lint": "./node_modules/prettier/bin/prettier.cjs --write app.ts ./src/*ts",
+    "deploy": "npm install && npm run lint && npm run build && AWS_PROFILE=blue cdk deploy --require-approval never --all"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sendgrid/mail": "^8.1.1",
+    "aws-cdk-lib": "^2.146.0",
+    "aws-sdk": "^2.1561.0",
+    "constructs": "^10.3.0",
+    "google-auth-library": "^9.11.0",
+    "install": "^0.13.0",
+    "npm": "^10.4.0",
+    "pg": "^8.12.0",
+    "prettier": "^3.2.5",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.12"
+  }
+}

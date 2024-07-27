@@ -1,0 +1,6 @@
+{
+  "BlueListsDataStack": {
+    "BlueListsDataBucketArn": "arn:aws:s3:::blue-amsterdam-lists-data",
+    "BlueListsDataBucketName": "blue-amsterdam-lists-data"
+  }
+}

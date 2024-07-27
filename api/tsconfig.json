@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2020",
+    "esModuleInterop": true,
+    "strict": false,
+    "skipLibCheck": true  // Add this line to skip type checking of all declaration files (*.d.ts).
+  },
+  "include": [
+    "app.ts",
+    "src/*.ts"
+  ],
+  "exclude": [
+    "**/node_modules/**"
+  ]
+}
