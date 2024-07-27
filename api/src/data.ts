@@ -8,12 +8,14 @@ const BUCKET_NAME = process.env.BUCKET_NAME;
 export const Scope = {
   USERS: "users",
   SYSTEM: "system",
+  LISTS: "lists",
 };
 
 export const Store = {
   LISTS: "lists",
   LIST: "list",
   MEMBERS: "members",
+  DETAILS: "details",
   ITEMS: "items",
 };
 
@@ -21,6 +23,7 @@ const LATEST = "_latest";
 
 type Key = {
   email?: string;
+  listId?: string;
   store: string;
   name?: string;
   today?: boolean;
@@ -30,6 +33,8 @@ type Key = {
 export const getKey = (key: Key): string => {
   if (key.today) key.name = new Date().toISOString().split("T")[0];
   if (key.now) key.name = new Date().toISOString();
+  if (key.listId)
+    return `${Scope.LISTS}/${key.listId}/${key.store}/${key.name || LATEST}.json`;
   if (key.email)
     return `${Scope.USERS}/${key.email}/${key.store}/${key.name || LATEST}.json`;
   return `${Scope.SYSTEM}/${key.store}/${key.name || LATEST}.json`;

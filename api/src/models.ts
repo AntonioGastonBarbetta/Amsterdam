@@ -5,10 +5,7 @@ export type List = {
 };
 
 export type Item = {
-  id: string;
   text: string;
-  owner: string;
-  createdAt: string;
 };
 
 export type Member = {

@@ -8,7 +8,7 @@ import {
   onDeleteMember,
   onGetItems,
   onUpdateItems,
-} from "./app";
+} from "./controllers";
 import { Request, apiHandler } from "./api";
 
 async function onListsRequest(event: Request): Promise<any> {
@@ -28,13 +28,13 @@ async function onListRequest(event: Request): Promise<any> {
 async function onMembersRequest(event: Request): Promise<any> {
   const token = event.headers.Authorization.split(" ").pop() || "";
   const user: ProfileType = await verify(token);
-  if (event.httpMethod === "POST") return await onCreateMember(event, user);
   return await onGetMembers(event, user);
 }
 
 async function onMemberRequest(event: Request): Promise<any> {
   const token = event.headers.Authorization.split(" ").pop() || "";
   const user: ProfileType = await verify(token);
+  if (event.httpMethod === "POST") return await onCreateMember(event, user);
   if (event.httpMethod === "DELETE") return await onDeleteMember(event, user);
   return {};
 }

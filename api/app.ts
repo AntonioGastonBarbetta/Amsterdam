@@ -1,8 +1,8 @@
 import { Construct } from "constructs";
 import * as cdk from "aws-cdk-lib/core";
-import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as iam from "aws-cdk-lib/aws-iam";
+import * as logs from "aws-cdk-lib/aws-logs";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import * as s3 from "aws-cdk-lib/aws-s3";
 
@@ -74,12 +74,13 @@ class BlueListsApiStack extends cdk.Stack {
     const listsLambda = new lambda.Function(this, "BlueListsApiLists", {
       runtime: lambda.Runtime.NODEJS_20_X,
       role: role,
-      handler: "index.allListsHandler",
+      handler: "views.allListsHandler",
       memorySize: 128,
       timeout: cdk.Duration.seconds(30),
       code: lambda.Code.fromAsset("src", {
         exclude: ["*.ts", "node_modules/aws-sdk-lib", "test/", "README.md"],
       }),
+      logRetention: logs.RetentionDays.THREE_DAYS,
       environment: {
         BUCKET_NAME: bucketName,
         GOOGLE_CLIENT_ID: "abc",
@@ -91,12 +92,13 @@ class BlueListsApiStack extends cdk.Stack {
     const listLambda = new lambda.Function(this, "BlueListsApiList", {
       runtime: lambda.Runtime.NODEJS_20_X,
       role: role,
-      handler: "index.oneListHandler",
+      handler: "views.oneListHandler",
       memorySize: 128,
       timeout: cdk.Duration.seconds(30),
       code: lambda.Code.fromAsset("src", {
         exclude: ["*.ts", "node_modules/aws-sdk-lib", "test/", "README.md"],
       }),
+      logRetention: logs.RetentionDays.THREE_DAYS,
       environment: {
         BUCKET_NAME: bucketName,
         GOOGLE_CLIENT_ID: "abc",
@@ -108,12 +110,13 @@ class BlueListsApiStack extends cdk.Stack {
     const itemsLambda = new lambda.Function(this, "BlueListsApiItems", {
       runtime: lambda.Runtime.NODEJS_20_X,
       role: role,
-      handler: "index.allItemsHandler",
+      handler: "views.allItemsHandler",
       memorySize: 128,
       timeout: cdk.Duration.seconds(30),
       code: lambda.Code.fromAsset("src", {
         exclude: ["*.ts", "node_modules/aws-sdk-lib", "test/", "README.md"],
       }),
+      logRetention: logs.RetentionDays.THREE_DAYS,
       environment: {
         BUCKET_NAME: bucketName,
         GOOGLE_CLIENT_ID: "abc",
@@ -125,12 +128,13 @@ class BlueListsApiStack extends cdk.Stack {
     const membersLambda = new lambda.Function(this, "BlueListsApiMembers", {
       runtime: lambda.Runtime.NODEJS_20_X,
       role: role,
-      handler: "index.allMembersHandler",
+      handler: "views.allMembersHandler",
       memorySize: 128,
       timeout: cdk.Duration.seconds(30),
       code: lambda.Code.fromAsset("src", {
         exclude: ["*.ts", "node_modules/aws-sdk-lib", "test/", "README.md"],
       }),
+      logRetention: logs.RetentionDays.THREE_DAYS,
       environment: {
         BUCKET_NAME: bucketName,
         GOOGLE_CLIENT_ID: "abc",
@@ -142,12 +146,13 @@ class BlueListsApiStack extends cdk.Stack {
     const memberLambda = new lambda.Function(this, "BlueListsApiMember", {
       runtime: lambda.Runtime.NODEJS_20_X,
       role: role,
-      handler: "index.oneMemberLambda",
+      handler: "views.oneMemberHandler",
       memorySize: 128,
       timeout: cdk.Duration.seconds(30),
       code: lambda.Code.fromAsset("src", {
         exclude: ["*.ts", "node_modules/aws-sdk-lib", "test/", "README.md"],
       }),
+      logRetention: logs.RetentionDays.THREE_DAYS,
       environment: {
         BUCKET_NAME: bucketName,
         GOOGLE_CLIENT_ID: "abc",
@@ -175,16 +180,16 @@ class BlueListsApiStack extends cdk.Stack {
       {},
     );
     allListsEndpoint.addMethod(
-      "POST",
-      new apigateway.LambdaIntegration(listsLambda),
-      {},
-    );
-    allListsEndpoint.addMethod(
       "OPTIONS",
       new apigateway.LambdaIntegration(listsLambda),
       {},
     );
 
+    allListsEndpoint.addMethod(
+      "POST",
+      new apigateway.LambdaIntegration(listsLambda),
+      {},
+    );
     oneListEndpoint.addMethod(
       "DELETE",
       new apigateway.LambdaIntegration(listLambda),
