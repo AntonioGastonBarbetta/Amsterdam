@@ -1,28 +1,23 @@
-package com.martincastroandantoniobarbetta.amsterdam.navigation
+package com.martincastroandantoniobarbetta.amsterdam.ui.navigation
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-
-import com.martincastroandantoniobarbetta.amsterdam.navigation.MainDestination.Home
-import com.martincastroandantoniobarbetta.amsterdam.navigation.MainDestination.NoteDetail
-
 import com.martincastroandantoniobarbetta.amsterdam.ui.components.HomeScreen
 import com.martincastroandantoniobarbetta.amsterdam.ui.components.NoteDetailScreen
 
+import com.martincastroandantoniobarbetta.amsterdam.ui.navigation.MainDestination.Home
+import com.martincastroandantoniobarbetta.amsterdam.ui.navigation.MainDestination.NoteDetail
 
 
 @Composable
 fun MainNavHost(
-    navController: NavHostController,
-    modifier: Modifier = Modifier
+        navController: NavHostController
 ) {
     NavHost(
         navController = navController,
         startDestination = Home.route,
-        modifier = modifier
     ) {
         composable(route = Home.route) {
             HomeScreen()

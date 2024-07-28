@@ -1,7 +1,4 @@
-package com.martincastroandantoniobarbetta.amsterdam.navigation
-
-
-
+package com.martincastroandantoniobarbetta.amsterdam.ui.navigation
 
 sealed interface MainDestination {
     val route: String

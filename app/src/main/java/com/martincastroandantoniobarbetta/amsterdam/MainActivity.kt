@@ -11,7 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.martincastroandantoniobarbetta.amsterdam.ui.theme.AmsterdamTheme
 
 
-import com.martincastroandantoniobarbetta.amsterdam.navigation.MainNavHost
+import com.martincastroandantoniobarbetta.amsterdam.ui.navigation.MainNavHost
 
 
 class MainActivity : ComponentActivity() {
