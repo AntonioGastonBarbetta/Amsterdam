@@ -14,14 +14,15 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun AddElementButton(
     modifier: Modifier = Modifier
-        .padding(16.dp)
+        .padding(16.dp),
+    onClick: ()-> Unit,
 ) {
     Box(
         modifier = modifier
             .heightIn(min = 30.dp)
 
     ) {
-        FloatingActionButton(onClick = { },
+        FloatingActionButton(onClick = onClick,
             modifier = modifier
                 .align(Alignment.BottomEnd)
 

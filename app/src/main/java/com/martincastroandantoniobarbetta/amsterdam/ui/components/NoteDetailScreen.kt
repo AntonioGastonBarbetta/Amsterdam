@@ -34,9 +34,11 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.text.input.ImeAction
 
 
-@OptIn(ExperimentalComposeUiApi::class)
+
 @Composable
-fun NoteDetailScreen() {
+fun NoteDetailScreen(
+    onClickBackToHome: () -> Unit,
+) {
     var title by remember { mutableStateOf("") }
     var items by remember { mutableStateOf(listOf("")) }
 
@@ -47,7 +49,7 @@ fun NoteDetailScreen() {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            IconButton(onClick = { /* Manejar evento de clic en el botón de retroceso */ }) {
+            IconButton(onClick = onClickBackToHome) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
             }
             IconButton(onClick = { /* Manejar evento de clic en el botón de aceptar */ }) {

@@ -7,9 +7,6 @@ import androidx.navigation.compose.composable
 import com.martincastroandantoniobarbetta.amsterdam.ui.components.HomeScreen
 import com.martincastroandantoniobarbetta.amsterdam.ui.components.NoteDetailScreen
 
-import com.martincastroandantoniobarbetta.amsterdam.ui.navigation.MainDestination.Home
-import com.martincastroandantoniobarbetta.amsterdam.ui.navigation.MainDestination.NoteDetail
-
 
 @Composable
 fun MainNavHost(
@@ -17,27 +14,27 @@ fun MainNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Home.route,
+        startDestination = NoteDetail.route,
     ) {
         composable(route = Home.route) {
-            HomeScreen()
+            HomeScreen {navController.navigate(NoteDetail.route)}
         }
 
         composable(route = NoteDetail.route)  {
-            NoteDetailScreen()
+            NoteDetailScreen { navController.navigate(Home.route) }
         }
     }
 }
 
 
-fun NavHostController.navigateSingleTopTo(route: String) =
-    this.navigate(route) {
-        popUpTo(
-            this@navigateSingleTopTo.graph.findStartDestination().id
-        ) {
-            saveState = true
-        }
-        launchSingleTop = true
-        restoreState = true
-    }
+//fun NavHostController.navigateSingleTopTo(route: String) =
+//   this.navigate(route) {
+//      popUpTo(
+//          this@navigateSingleTopTo.graph.findStartDestination().id
+//      ) {
+//          saveState = true
+//      }
+//      launchSingleTop = true
+//      restoreState = true
+//  }
 
