@@ -1,5 +1,7 @@
 package com.martincastroandantoniobarbetta.amsterdam.ui.components
 
+import NoteItem
+import SharedViewModel
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -37,10 +39,11 @@ import androidx.compose.ui.text.input.ImeAction
 
 @Composable
 fun NoteDetailScreen(
+    sharedViewModel: SharedViewModel,
     onClickBackToHome: () -> Unit,
 ) {
     var title by remember { mutableStateOf("") }
-    var items by remember { mutableStateOf(listOf("")) }
+    var items by remember { mutableStateOf(mutableListOf(NoteItem(text = "", isChecked = false))) }
 
     Column(
         modifier = Modifier.padding(16.dp)
@@ -52,7 +55,7 @@ fun NoteDetailScreen(
             IconButton(onClick = onClickBackToHome) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
             }
-            IconButton(onClick = { /* Manejar evento de clic en el botón de aceptar */ }) {
+            IconButton(onClick = { sharedViewModel.addNote(title = title, items = items) }) {
                 Icon(Icons.Default.Done, contentDescription = "Done")
             }
             IconButton(onClick = { /* Manejar evento de clic en el botón de cancelar */ }) {
@@ -79,20 +82,21 @@ fun NoteDetailScreen(
                     .fillMaxWidth()
                     .padding(top = 10.dp)
             ) {
-                var checked by remember { mutableStateOf(false) }
-                var text by remember { mutableStateOf(item) }
+                var checked by remember { mutableStateOf(item.isChecked) }
+                var text by remember { mutableStateOf(item.text) } // Cambiado para acceder a la propiedad text
 
                 Checkbox(
                     checked = checked,
-                    onCheckedChange = { checked = it }
+                    onCheckedChange = {
+                        checked = it
+                        items[index].isChecked = it
+                    }
                 )
                 TextField(
                     value = text,
                     onValueChange = { newText ->
                         text = newText
-                        items = items.toMutableList().apply {
-                            set(index, newText)
-                        }
+                        items[index].text = newText // Actualiza el texto en el NoteItem
                     },
                     modifier = Modifier
                         .weight(1f)
@@ -104,7 +108,7 @@ fun NoteDetailScreen(
                     keyboardActions = KeyboardActions(
                         onDone = {
                             if (text.isNotEmpty()) {
-                                items = items + ""
+                                items.add(NoteItem(text = "", isChecked = false))
                             }
                         }
                     )

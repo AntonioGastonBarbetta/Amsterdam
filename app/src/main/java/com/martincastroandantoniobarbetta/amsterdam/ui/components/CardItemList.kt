@@ -13,7 +13,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CardItemList(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    note: Note
 
 ) {
     Box(
@@ -29,18 +30,20 @@ fun CardItemList(
                 .padding(top = 10.dp)
         ) {
             Text(
-                text = "List one",
+                text = note.title,
                 modifier = Modifier
                     .padding(16.dp),
                 textAlign = TextAlign.Center,
             )
 
-            Text(
-                text = "blalbalbalblablaba",
-                modifier = Modifier
-                    .padding(start = 16.dp, end = 16.dp, bottom = 3.dp),
-                textAlign = TextAlign.Center,
-            )
+            note.items.forEach {
+                item -> Text(
+                    text = item.text,
+                    modifier = Modifier
+                        .padding(start = 16.dp, end = 16.dp, bottom = 3.dp),
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
     }
 }

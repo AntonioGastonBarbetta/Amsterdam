@@ -1,4 +1,5 @@
 package com.martincastroandantoniobarbetta.amsterdam.ui.navigation
+import SharedViewModel
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -10,31 +11,22 @@ import com.martincastroandantoniobarbetta.amsterdam.ui.components.NoteDetailScre
 
 @Composable
 fun MainNavHost(
-        navController: NavHostController
+        navController: NavHostController,
+        sharedViewModel: SharedViewModel
 ) {
     NavHost(
         navController = navController,
-        startDestination = NoteDetail.route,
+        startDestination = Home.route,
     ) {
         composable(route = Home.route) {
-            HomeScreen {navController.navigate(NoteDetail.route)}
+            HomeScreen (sharedViewModel = sharedViewModel) {navController.navigate(NoteDetail.route)}
         }
 
         composable(route = NoteDetail.route)  {
-            NoteDetailScreen { navController.navigate(Home.route) }
+            NoteDetailScreen (sharedViewModel = sharedViewModel) { navController.navigate(Home.route) }
         }
     }
 }
 
 
-//fun NavHostController.navigateSingleTopTo(route: String) =
-//   this.navigate(route) {
-//      popUpTo(
-//          this@navigateSingleTopTo.graph.findStartDestination().id
-//      ) {
-//          saveState = true
-//      }
-//      launchSingleTop = true
-//      restoreState = true
-//  }
 
