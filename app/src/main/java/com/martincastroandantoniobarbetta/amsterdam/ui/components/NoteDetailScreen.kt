@@ -2,157 +2,122 @@ package com.martincastroandantoniobarbetta.amsterdam.ui.components
 
 import NoteItem
 import SharedViewModel
-import androidx.compose.foundation.layout.*
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.runtime.*
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.Alignment
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.foundation.layout.LocalWindowInsets
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NoteDetailScreen(
     sharedViewModel: SharedViewModel,
     onClickBackToHome: () -> Unit,
+
 ) {
-    var title by remember { mutableStateOf("") }
     var items by remember { mutableStateOf(listOf(NoteItem(text = "", isChecked = false))) }
 
-    val scrollState = rememberScrollState()
-    val focusManager = LocalFocusManager.current
-    val lastFocusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val lastFocusRequester = remember { FocusRequester()
 
-    // Obtener los insets del teclado
-    val insets = LocalWindowInsets.current
-    val imeHeight = with(LocalDensity.current) { insets.ime.bottom.toDp() }
-
-    // FocusRequester para el título
-    val titleFocusRequester = remember { FocusRequester() }
-
-    // Enfocar automáticamente el título al ingresar a la pantalla
-    LaunchedEffect(Unit) {
-        titleFocusRequester.requestFocus()
     }
 
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize()
-    ) {
-        // Encabezado con los iconos
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp)
-        ) {
-            IconButton(onClick = onClickBackToHome) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            IconButton(onClick = {
-                sharedViewModel.addNote(title = title, items = items.toMutableList())
-                onClickBackToHome()
-            }) {
-                Icon(Icons.Default.Done, contentDescription = "Done")
-            }
-        }
+    fun onClickDone (title: String)  {
+        sharedViewModel.addNote(title = title, items = items.toMutableList())
+        onClickBackToHome()
+    }
 
-        // Campo de título siempre visible y enfocado al ingresar
-        TextField(
-            value = title,
-            onValueChange = { text -> title = text },
-            modifier = Modifier
-                .padding(top = 10.dp, bottom = 10.dp)
-                .height(56.dp)
-                .fillMaxWidth()
-                .focusRequester(titleFocusRequester), // Aplicar el FocusRequester
-            placeholder = { Text("Title") },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Next
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = { /* No hacer nada para que el teclado no se cierre */ }
-            )
-        )
-
-        // Lista de items, con desplazamiento controlado
+    Scaffold { paddingValues ->
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .verticalScroll(scrollState)
-                .padding(bottom = imeHeight) // Ajustar el contenido cuando el teclado está visible
+                .fillMaxSize()
+                .padding(paddingValues)
         ) {
-            items.forEachIndexed { index, item ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp)
-                ) {
-                    var checked by remember { mutableStateOf(item.isChecked) }
-                    var text by remember { mutableStateOf(item.text) }
+            NoteDetailHeader(onClickBackToHome = onClickBackToHome, onClickIsDone = ::onClickDone)
 
-                    val focusRequester = remember { FocusRequester() }
-
-                    Checkbox(
-                        checked = checked,
-                        onCheckedChange = {
-                            checked = it
-                            items = items.toMutableList().apply {
-                                this[index] = item.copy(isChecked = it)
-                            }
-                        }
-                    )
-
-                    TextField(
-                        value = text,
-                        onValueChange = { newText ->
-                            text = newText
-                            items = items.toMutableList().apply {
-                                this[index] = item.copy(text = newText)
-                            }
-                        },
+            // Tasks list
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 8.dp)
+            ) {
+                itemsIndexed(items) { index, item ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .weight(1f)
-                            .padding(start = 8.dp)
-                            .focusRequester(if (index == items.size - 1) lastFocusRequester else focusRequester),
-                        placeholder = { Text("Task") },
-                        keyboardOptions = KeyboardOptions.Default.copy(
-                            imeAction = ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                if (text.isNotEmpty() && index == items.size - 1) {
-                                    // Agregar un nuevo campo vacío
-                                    items = items + NoteItem(text = "", isChecked = false)
-                                    focusManager.clearFocus() // Esto ya no ocultará el teclado
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp, horizontal = 16.dp)
+                    ) {
+                        var text by remember { mutableStateOf(item.text) }
+                        var checked by remember { mutableStateOf(item.isChecked) }
+
+                        Checkbox(
+                            checked = checked,
+                            onCheckedChange = { isChecked ->
+                                checked = isChecked
+                                items = items.toMutableList().apply {
+                                    this[index] = item.copy(isChecked = isChecked)
                                 }
                             }
                         )
-                    )
+                        TextField(
+                            value = text,
+                            onValueChange = { newText ->
+                                text = newText
+                                items = items.toMutableList().apply {
+                                    this[index] = item.copy(text = newText)
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 8.dp)
+                                .focusRequester(if (index == items.size - 1) lastFocusRequester else FocusRequester()),
+                            placeholder = { Text("Task") },
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                imeAction = ImeAction.Done
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onDone = {
+                                    if (text.isNotEmpty() && index == items.size - 1) {
+                                        items = items + NoteItem(text = "", isChecked = false)
+                                        lastFocusRequester.requestFocus()
+                                        keyboardController?.show()
+                                    }
+                                }
+                            )
+                        )
+                    }
                 }
             }
         }
     }
 
-    // Enfocar automáticamente el último campo cuando se agrega
     LaunchedEffect(items.size) {
         if (items.last().text.isEmpty()) {
             lastFocusRequester.requestFocus()
-            scrollState.animateScrollTo(scrollState.maxValue)
+            keyboardController?.show()
         }
     }
 }
